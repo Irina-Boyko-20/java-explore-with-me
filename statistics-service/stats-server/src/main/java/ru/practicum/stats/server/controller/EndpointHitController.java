@@ -31,6 +31,7 @@ import java.util.List;
 @Validated
 public class EndpointHitController {
     private final EndpointHitService service;
+    private static final String timeFormat = "yyyy-MM-dd HH:mm:ss";
 
     /**
      * Сохраняет информацию о запросе к эндпоинту.
@@ -62,8 +63,8 @@ public class EndpointHitController {
      */
     @GetMapping("/stats")
     public List<ViewStatsDto> getStats(
-            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start,
-            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end,
+            @RequestParam @DateTimeFormat(pattern = timeFormat) LocalDateTime start,
+            @RequestParam @DateTimeFormat(pattern = timeFormat) LocalDateTime end,
             @RequestParam(required = false) List<String> uris,
             @RequestParam(defaultValue = "false") boolean unique
     ) {
