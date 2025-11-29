@@ -5,12 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 
-import java.time.Duration;
-import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +20,9 @@ import java.util.Map;
  * и получения статистики просмотров эндпоинтов.
  * Использует REST-шаблон для отправки HTTP-запросов к серверу статистики.
  */
+@Component
 public class StatsClient extends BaseClient {
+    private static final String timeFormat = "yyyy-MM-dd HH:mm:ss";
 
     /**
      * Имя приложения, которое отправляет статистику.
@@ -35,20 +37,19 @@ public class StatsClient extends BaseClient {
 
     /**
      * Конструктор клиента для сервера статистики.
-     * Инициализирует базовый клиент с указанным URL сервера и настраивает RestTemplate
-     * с таймаутами подключения и чтения.
+     * Инициализирует базовый клиент с указанным URL сервера и настраивает RestTemplate.
      *
-     * @param serverUrl URL сервера статистики, получаемый из конфигурации (например, из application.properties).
+     * @param serverUrl URL сервера статистики, получаемый из конфигурации.
      * @param builder   Строитель для создания RestTemplate.
      */
     @Autowired
-    public StatsClient(@Value("${stats-server.url}") String serverUrl, RestTemplateBuilder builder) {
+    public StatsClient(@Value("${stats-service.url:http://localhost:9090}") String serverUrl,
+                       RestTemplateBuilder builder
+    ) {
         super(
                 builder
                         .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl))
                         .requestFactory(() -> new HttpComponentsClientHttpRequestFactory())
-                        .setConnectTimeout(Duration.ofSeconds(30))
-                        .setReadTimeout(Duration.ofSeconds(60))
                         .build()
         );
     }
@@ -65,7 +66,7 @@ public class StatsClient extends BaseClient {
                 .app(APPLICATION_NAME)
                 .uri(request.getRequestURI())
                 .ip(request.getRemoteAddr())
-                .timestamp(LocalDateTime.from(Instant.now()))
+                .timestamp(LocalDateTime.now().format(DateTimeFormatter.ofPattern(timeFormat)))
                 .build();
         post("/hit", hit);
     }

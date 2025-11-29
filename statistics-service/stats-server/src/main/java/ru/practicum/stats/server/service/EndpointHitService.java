@@ -7,10 +7,12 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.EndpointHitDto;
 import ru.practicum.ViewStatsDto;
 import ru.practicum.stats.server.exception.ValidationTimeException;
+import ru.practicum.stats.server.mapper.EndpointHitMapper;
 import ru.practicum.stats.server.model.EndpointHit;
 import ru.practicum.stats.server.repository.EndpointHitRepository;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -23,6 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EndpointHitService {
     private final EndpointHitRepository repository;
+    private final EndpointHitMapper mapper;
 
     /**
      * Сохраняет информацию о хите эндпоинта в репозитории.
@@ -31,7 +34,7 @@ public class EndpointHitService {
      *
      * @param request DTO с данными о хите, включая приложение, URI, IP и временную метку.
      */
-    public void saveHit(EndpointHitDto request) {
+    public EndpointHitDto saveHit(EndpointHitDto request) {
         EndpointHit entity = new EndpointHit();
         entity.setApp(request.getApp());
         entity.setUri(request.getUri());
@@ -41,6 +44,8 @@ public class EndpointHitService {
 
         EndpointHit saved = repository.save(entity);
         log.info("Saved entity with ID: {}, timestamp: {}", saved.getId(), saved.getTimestamp());
+
+        return mapper.toEndpointHitDto(saved);
     }
 
     /**
@@ -64,17 +69,20 @@ public class EndpointHitService {
             throw new ValidationTimeException("Start cannot be after end.");
         }
 
+        String startStr = start.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        String endStr = end.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+
         log.info("Service: processing stats with unique={}, uris={}", unique, uris);
 
         if (unique) {
             if (uris != null && !uris.isEmpty()) {
-                return repository.findHitsWithUniqueIpWithUris(uris, start, end);
+                return repository.findHitsWithUniqueIpWithUris(uris, startStr, endStr);
             } else {
                 return repository.findHitsWithUniqueIpWithoutUris(start, end);
             }
         } else {
             if (uris != null && !uris.isEmpty()) {
-                return repository.findAllHits(start, end, uris);
+                return repository.findAllHits(startStr, endStr, uris);
             } else {
                 return repository.findAllHitsWithoutUris(start, end);
             }

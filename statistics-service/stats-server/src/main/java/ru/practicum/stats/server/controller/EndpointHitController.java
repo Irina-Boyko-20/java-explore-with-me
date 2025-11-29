@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,10 +45,9 @@ public class EndpointHitController {
      */
     @PostMapping("/hit")
     @ResponseStatus(HttpStatus.CREATED)
-    public String hit(@RequestBody @Valid EndpointHitDto request) {
+    public ResponseEntity<EndpointHitDto> hit(@RequestBody @Valid EndpointHitDto request) {
         log.info("Stats-server: create hit request={}", request);
-        service.saveHit(request);
-        return "Информация сохранена";
+        return new ResponseEntity<>(service.saveHit(request), HttpStatus.CREATED);
     }
 
     /**

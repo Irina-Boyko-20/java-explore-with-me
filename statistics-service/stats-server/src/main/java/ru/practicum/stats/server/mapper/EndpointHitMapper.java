@@ -1,6 +1,7 @@
 package ru.practicum.stats.server.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import ru.practicum.EndpointHitDto;
 import ru.practicum.stats.server.model.EndpointHit;
 
@@ -13,11 +14,16 @@ import ru.practicum.stats.server.model.EndpointHit;
 public interface EndpointHitMapper {
 
     /**
-     * Преобразует объект EndpointHitDto в объект EndpointHit.
-     * Этот метод выполняет маппинг полей из DTO в сущность для дальнейшего использования в сервисе статистики.
+     * Преобразует объект EndpointHit в объект EndpointHitDto.
+     * Этот метод выполняет маппинг полей из сущности в DTO для дальнейшего использования в сервисе статистики.
      *
-     * @param hitDto объект DTO, содержащий данные о хите эндпоинта
-     * @return объект EndpointHit, представляющий сущность хита эндпоинта для сохранения в БД
+     * @param hit объект EndpointHit, представляющий сущность хита эндпоинта для сохранения в БД
+     * @return объект DTO, содержащий данные о хите эндпоинта
      */
-    EndpointHit toEndpointHit(EndpointHitDto hitDto);
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "app", source = "app")
+    @Mapping(target = "uri", source = "uri")
+    @Mapping(target = "ip", source = "ip")
+    @Mapping(target = "timestamp", source = "timestamp")
+    EndpointHitDto toEndpointHitDto(EndpointHit hit);
 }
