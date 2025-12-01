@@ -43,7 +43,7 @@ public class StatsClient extends BaseClient {
      * @param builder   Строитель для создания RestTemplate.
      */
     @Autowired
-    public StatsClient(@Value("${stats-service.url:http://localhost:9090}") String serverUrl,
+    public StatsClient(@Value("${stats.server.url}") String serverUrl,
                        RestTemplateBuilder builder
     ) {
         super(

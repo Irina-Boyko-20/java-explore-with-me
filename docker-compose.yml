@@ -10,6 +10,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/stats
       - POSTGRES_USER=stats
       - POSTGRES_PASSWORD=stats
+      - SPRING_PROFILES_ACTIVE=docker
 
   ewm-service:
     build: main-service
