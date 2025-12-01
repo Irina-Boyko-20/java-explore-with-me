@@ -41,7 +41,7 @@ public class NewCompilationDto {
     /**
      * Флаг закрепления подборки на главной странице сайта.
      */
-    boolean pinned = false;
+    boolean pinned;
 
     /**
      * Множество идентификаторов событий, включаемых в подборку.

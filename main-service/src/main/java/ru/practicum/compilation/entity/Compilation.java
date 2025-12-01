@@ -59,7 +59,7 @@ public class Compilation {
      * Флаг закрепления подборки на главной странице.
      */
     @Column(name = "pinned", nullable = false)
-    boolean pinned = false;
+    boolean pinned;
 
     /**
      * Множество событий, входящих в подборку.
