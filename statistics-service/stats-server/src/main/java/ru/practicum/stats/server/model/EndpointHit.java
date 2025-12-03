@@ -12,8 +12,6 @@ import lombok.AllArgsConstructor;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDateTime;
-
 /**
  * Сущность, представляющая запись о хите (запросе) к эндпоинту сервиса.
  * Хранится в таблице "hits" базы данных и используется для сбора статистики
@@ -57,5 +55,5 @@ public class EndpointHit {
      * Время и дата выполнения запроса.
      */
     @Column(name = "timestamp", nullable = false)
-    LocalDateTime timestamp;
+    String timestamp;
 }

@@ -33,7 +33,7 @@ public interface EndpointHitRepository extends JpaRepository<EndpointHit, Long> 
             "WHERE h.uri IN (?1) AND h.timestamp BETWEEN ?2 AND ?3 " +
             "GROUP BY h.app, h.uri " +
             "ORDER BY COUNT(DISTINCT h.ip) DESC")
-    List<ViewStatsDto> findHitsWithUniqueIpWithUris(List<String> uris, LocalDateTime start, LocalDateTime end);
+    List<ViewStatsDto> findHitsWithUniqueIpWithUris(List<String> uris, String start, String end);
 
     /**
      * Получает статистику просмотров эндпоинтов с уникальными IP-адресами для всех URI.
@@ -66,8 +66,8 @@ public interface EndpointHitRepository extends JpaRepository<EndpointHit, Long> 
             "WHERE h.timestamp BETWEEN :start AND :end AND h.uri IN (:uris) " +
             "GROUP BY h.app, h.uri " +
             "ORDER BY COUNT(h.ip) DESC")
-    List<ViewStatsDto> findAllHits(@Param("start") LocalDateTime start,
-                                   @Param("end") LocalDateTime end,
+    List<ViewStatsDto> findAllHits(@Param("start") String start,
+                                   @Param("end") String end,
                                    @Param("uris") List<String> uris);
 
     /**
