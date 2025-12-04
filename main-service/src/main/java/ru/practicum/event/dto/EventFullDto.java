@@ -121,4 +121,9 @@ public class EventFullDto {
      * Количество просмотров события.
      */
     Integer views;
+
+    /**
+     * Количество комментариев события.
+     */
+    Integer comments;
 }
