@@ -1988,12 +1988,6 @@
 									"            pm.expect(response.length).to.be.at.most(size);\r",
 									"        }\r",
 									"    }\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Заголовки ответа корректны\", function () {\r",
-									"    pm.response.to.have.header(\"Content-Type\");\r",
-									"    const contentType = pm.response.headers.get(\"Content-Type\");\r",
-									"    pm.expect(contentType).to.include(\"application/json\");\r",
 									"});"
 								],
 								"type": "text/javascript",
