@@ -2057,7 +2057,7 @@
 	"variable": [
 		{
 			"key": "base_url",
-			"value": "https://localhost:8080"
+			"value": "http://localhost:8080"
 		},
 		{
 			"key": "user_id",
