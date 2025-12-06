@@ -53,7 +53,7 @@ public class CommentServiceImpl implements CommentService {
         List<Comment> comments = commentRepository.findByAuthorNameId(userId, pageRequest);
 
         return comments.stream()
-                .map(CommentMapper::toCommentResponseDto)
+                .map(mapper::toCommentResponseDto)
                 .toList();
     }
 
@@ -80,7 +80,7 @@ public class CommentServiceImpl implements CommentService {
         statsClient.saveHit(httpServletRequest);
 
         return comments.stream()
-                .map(CommentMapper::toCommentResponseDto)
+                .map(mapper::toCommentResponseDto)
                 .toList();
     }
 
@@ -95,7 +95,7 @@ public class CommentServiceImpl implements CommentService {
     public CommentResponseDto getAdminComment(Long commentId) {
         Comment comment = commentExists(commentId);
 
-        return CommentMapper.toCommentResponseDto(comment);
+        return mapper.toCommentResponseDto(comment);
     }
 
     /**
@@ -123,12 +123,12 @@ public class CommentServiceImpl implements CommentService {
     public CommentResponseDto add(Long userId, Long eventId, CommentDto dto, HttpServletRequest httpServletRequest) {
         User user = userService.userExists(userId);
         Event event = eventService.eventExists(eventId);
-        Comment comment = CommentMapper.toComment(user, event, dto);
+        Comment comment = mapper.toComment(user, event, dto);
 
         event.setComments(event.getComments() + 1);
         eventRepository.save(event);
 
-        return CommentMapper.toCommentResponseDto(commentRepository.save(comment));
+        return mapper.toCommentResponseDto(commentRepository.save(comment));
     }
 
     /**
@@ -152,7 +152,7 @@ public class CommentServiceImpl implements CommentService {
 
         comment.setText(newComment.getText());
 
-        return CommentMapper.toCommentResponseDto(commentRepository.save(comment));
+        return mapper.toCommentResponseDto(commentRepository.save(comment));
     }
 
     /**
@@ -174,7 +174,7 @@ public class CommentServiceImpl implements CommentService {
                     " the administrator can view the comment with ID= %d".formatted(commentId));
         }
 
-        return CommentMapper.toCommentResponseDto(comment);
+        return mapper.toCommentResponseDto(comment);
     }
 
     /**

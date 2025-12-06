@@ -1,6 +1,7 @@
 package ru.practicum.comment.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import ru.practicum.comment.dto.CommentDto;
 import ru.practicum.comment.dto.CommentResponseDto;
 import ru.practicum.comment.entity.Comment;
@@ -50,16 +51,7 @@ public interface CommentMapper {
      * @throws NullPointerException если {@code comment}, {@code comment.getAuthorName()}
      *         или {@code comment.getEvent()} являются {@code null}
      */
-    static CommentResponseDto toCommentResponseDto(Comment comment) {
-        UserShortDto authorName = UserMapper.toUserForEventShotDto(comment.getAuthorName());
-        EventCommentDto commentEvent = EventMapper.toEventCommentDto(comment.getEvent());
-        return new CommentResponseDto(
-                comment.getId(),
-                comment.getText(),
-                authorName,
-                commentEvent,
-                comment.getCreated());
-    }
+    CommentResponseDto toCommentResponseDto(Comment comment);
 
     /**
      * Создает сущность комментария из DTO и связанных сущностей.
@@ -87,7 +79,10 @@ public interface CommentMapper {
      * @return новая сущность комментария, готовая для сохранения в базе данных
      * @throws NullPointerException если любой из параметров является {@code null}
      */
-    static Comment toComment(User user, Event event, CommentDto commentDto) {
-        return new Comment(null, event, commentDto.getText(), user, LocalDateTime.now());
-    }
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "created", expression = "java(java.time.LocalDateTime.now())")
+    @Mapping(source = "commentDto.text", target = "text")
+    @Mapping(source = "user", target = "authorName")
+    @Mapping(source = "event", target = "event")
+    Comment toComment(User user, Event event, CommentDto commentDto);
 }

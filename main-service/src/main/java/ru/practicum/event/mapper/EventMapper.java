@@ -119,15 +119,5 @@ public interface EventMapper {
      * @param event сущность события для преобразования
      * @return DTO события для использования в контексте комментариев
      */
-    static EventCommentDto toEventCommentDto(Event event) {
-        return new EventCommentDto(
-                event.getId(),
-                event.getAnnotation(),
-                CategoryMapper.toCategoryForEventShotDto(event.getCategory()),
-                event.getEventDate(),
-                UserMapper.toUserForEventShotDto(event.getInitiator()),
-                event.getPaid(),
-                event.getTitle()
-        );
-    }
+    EventCommentDto toEventCommentDto(Event event);
 }
