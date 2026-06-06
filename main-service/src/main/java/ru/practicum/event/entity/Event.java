@@ -162,6 +162,13 @@ public class Event {
     Long views = 0L;
 
     /**
+     * Количество комментариев события.
+     */
+    @Column(name = "comments", nullable = false)
+    @Builder.Default
+    Integer comments = 0;
+
+    /**
      * Подборки, в которые включено данное событие.
      */
     @ManyToMany(mappedBy = "events")

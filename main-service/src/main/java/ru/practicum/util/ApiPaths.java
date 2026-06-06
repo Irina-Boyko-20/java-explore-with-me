@@ -12,12 +12,14 @@ public class ApiPaths {
     public static final String USERS = "/users";
     public static final String COMPILATIONS = "/compilations";
     public static final String REQUESTS = "/requests";
+    public static final String COMMENTS = "/comments";
 
     public static final String CATEGORY_BY_ID = "/{catId}";
     public static final String EVENT_BY_ID = "/{eventId}";
     public static final String USER_BY_ID = "/{userId}";
     public static final String COMPILATION_BY_ID = "/{compId}";
     public static final String REQUESTS_BY_ID = "/{requestId}";
+    public static final String COMMENTS_BY_ID = "/{commentId}";
 
     public static final String ADMIN = "/admin";
 

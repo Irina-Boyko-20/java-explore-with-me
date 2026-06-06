@@ -3,6 +3,7 @@ package ru.practicum.event.mapper;
 import org.mapstruct.Mapper;
 import ru.practicum.category.entity.Category;
 import ru.practicum.category.mapper.CategoryMapper;
+import ru.practicum.event.dto.EventCommentDto;
 import ru.practicum.event.dto.EventFullDto;
 import ru.practicum.event.dto.EventShortDto;
 import ru.practicum.event.entity.Event;
@@ -93,4 +94,30 @@ public interface EventMapper {
                 0L
         );
     }
+
+    /**
+     * Преобразует сущность события в DTO для комментариев с ручным маппингом.
+     * <p>
+     * Специализированный метод для создания {@link EventCommentDto} - DTO события,
+     * предназначенного для использования в контексте комментариев или там,
+     * где требуется минимальная информация о событии без статистических данных.
+     * </p>
+     * <p>
+     * Особенности преобразования:
+     * </p>
+     * <ul>
+     * <li>Использует {@link CategoryMapper#toCategoryForEventShotDto(Category)}
+     *     для преобразования категории в соответствующее DTO представление</li>
+     * <li>Использует {@link UserMapper#toUserForEventShotDto(User)}
+     *     для преобразования инициатора в краткое DTO пользователя</li>
+     * <li>Исключает статистические поля (confirmedRequests, views), так как они
+     *     не требуются в контексте комментариев</li>
+     * <li>Сохраняет только базовую информацию о событии: идентификатор, аннотацию,
+     *     категорию, дату проведения, инициатора, платность и заголовок</li>
+     * </ul>
+     *
+     * @param event сущность события для преобразования
+     * @return DTO события для использования в контексте комментариев
+     */
+    EventCommentDto toEventCommentDto(Event event);
 }
